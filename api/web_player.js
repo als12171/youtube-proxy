@@ -9,6 +9,7 @@ function fetch_target_id(req, res) {
     let id = req.params.id;
     let url = YOUTUBE_URL_PREFIX + id;
 
+	console.log("ytdl getinfo for: " + url);
     ytdl.getInfo(url, function (err, info) {
         if (err) {
             res.status(500).json({
@@ -16,22 +17,7 @@ function fetch_target_id(req, res) {
                 message: err.message
             });
         } else {
-            //let output_file = path.join(__dirname, '..', 'public', 'site', id + '.mp4');
-            //let writer = fs.createWriteStream(output_file);
-            //writer.on('finish', function () {
-            //    res.status(200).json({
-            //        state: 'success',
-            //        link: '/site/' + id + '.mp4',
-            //        info: {
-            //            id: id,
-            //            title: info.title
-            //        }
-            //    });
-            //});
-			//
-            //console.log("output_file: " + output_file);
-            //console.log("starting video download");
-            //ytdl(url).pipe(writer);
+			console.log("found desired video, going to download");
 			download_video(id);
         }
     });
@@ -41,6 +27,8 @@ function download_video(videoId) {
     let url = YOUTUBE_URL_PREFIX + videoId;
 
     let output_file = path.join(__dirname, '..', 'public', 'site', videoId + '.mp4');
+    console.log("output_file: " + output_file);
+
     let writer = fs.createWriteStream(output_file);
     writer.on('finish', function () {
         res.status(200).json({
@@ -53,7 +41,6 @@ function download_video(videoId) {
         });
     });
 
-    console.log("output_file: " + output_file);
     console.log("starting video download");
     ytdl(url).pipe(writer);
     console.log("finished video download");
