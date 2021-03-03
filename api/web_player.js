@@ -9,6 +9,8 @@ function fetch_target_id(req, res) {
     let id = req.params.id;
     let url = YOUTUBE_URL_PREFIX + id;
 
+			download_video(id);
+
 	console.log("ytdl getinfo for: " + url);
     ytdl.getInfo(url, function (err, info) {
         if (err) {
@@ -18,7 +20,7 @@ function fetch_target_id(req, res) {
             });
         } else {
 			console.log("found desired video, going to download");
-			download_video(id);
+			//download_video(id);
         }
     });
 }
