@@ -17,7 +17,7 @@ async function search_one(query) {
   }
 
   let video = videos[0];
-  console.log("video: " + video.id);
+  console.log("video id: " + video.videoId);
   return {
     id: video.videoId,
     link: video.url,
