@@ -5,18 +5,19 @@ var yts = require('yt-search');
 
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
-async function search_one(query, language) {
-  let results = await yts({
-    'query': query,
-    'pageStart': 1,
-    'pageEnd': 2,
-    'language': language
-  });
+async function search_one(query) {
+  console.log("query: " + query);
+  let results = await yts(query);
+
   let videos = results.videos;
+  console.log("videos: " + videos);
+
   if (!videos || !videos.length) {
     return null;
   }
+
   let video = videos[0];
+  console.log("video: " + video.id);
   return {
     id: video.videoId,
     link: video.url,

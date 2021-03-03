@@ -39,7 +39,8 @@ module.exports = function(app) {
 
   app.get('/search/:query', async function(req, res) {
     let query = req.params.query;
-    let result = await ytwrappers.search_one(query, 'en');
+    let result = await ytwrappers.search_one(query);
+	console.log("search result: " + result);
     if (result == null) {
       res.status(200).send({
         state: 'error',
