@@ -84,7 +84,10 @@ async function download_video(videoId, res, info) {
 }
 
 module.exports = function (app) {
-    app.get('/target/:id', fetch_target_id);
+    //app.get('/target/:id', fetch_target_id);
+    app.get('/target/:id', async function (req, res) {
+        await fetch_target_id(req, res);
+    });
 
     app.get('/search/:query', async function (req, res) {
         let query = req.params.query;

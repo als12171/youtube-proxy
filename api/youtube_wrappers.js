@@ -29,9 +29,9 @@ function search_one_sync(query) {
     (async() => await search_one(query))();
 }
 
-async function get_video_details(videoId) {
+async function get_video_details(id) {
 
-    let results = await yts(query);
+    let results = await yts(id);
     let videos = results.videos;
 
     if (!videos || !videos.length) {
@@ -46,8 +46,8 @@ async function get_video_details(videoId) {
     };
 }
 
-function get_video_details_sync(videoId) {
-    (async() => await get_video_details(videoId))();
+function get_video_details_sync(id) {
+    (async() => await get_video_details(id))();
 }
 
 module.exports = {
