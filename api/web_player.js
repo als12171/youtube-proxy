@@ -14,19 +14,6 @@ async function fetch_target_id(req, res) {
     console.log("video info: " + info);
     console.log("found desired video, going to download");
     await download_video(id, res, info);
-
-    // console.log("ytdl getinfo for: " + url);
-    // await ytdl.getInfo(url, function (err, info) {
-    // if (err) {
-    // res.status(500).json({
-    // state: 'error',
-    // message: err.message
-    // });
-    // } else {
-    // console.log("found desired video, going to download");
-    // download_video(id, res, info);
-    // }
-    // });
 }
 
 async function download_video(videoId, res, info) {
@@ -50,44 +37,47 @@ async function download_video(videoId, res, info) {
     console.log("starting video download");
     ytdl(url).pipe(writer);
     console.log("finished video download");
+}
 
-    //let starttime = 0;
-    //
-    //let video = ytdl(url, {
-    //    quality: "lowestvideo"
-    //}).pipe(writer);
-    //
-    //video.once("response", () => {
-    //    starttime = Date.now();
-    //});
-    //
-    //video.on("progress", (chunkLength, downloaded, total) => {
-    //    const percent = downloaded / total;
-    //    const downloadedSeconds = (Date.now() - starttime) / 1000;
-    //
-    //    const friedlyPercentage = Number((percent * 100).toFixed(2));
-    //    const downloadedMbs = Number((downloaded / 1024 / 1024).toFixed(2));
-    //    const totalInMbs = Number((total / 1024 / 1024).toFixed(2));
-    //    const estimatedLeft = parseInt(downloadedSeconds / percent - downloadedSeconds, 10);
-    //
-    //    const percentStr = `${friedlyPercentage}%`;
-    //    const downloadedMbStr = `${downloadedMbs}MB(s) of ${totalInMbs}MB(s)`;
-    //    const estimatedLeftStr = `${estimatedLeft} second(s)`;
-    //
-    //    if (downloaded !== total) {
-    //        console.log(`> ${percentStr} downloaded - ${downloadedMbStr} - estimated time left: ${estimatedLeftStr}`);
-    //    } else {
-    //        console.log(`✅ Video downloaded. It took: ${downloadedSeconds}second(s) for download process.`);
-    //    }
-    //
-    //});
+async function fetch_target_id_sync(req, res) {
+    let id = req.params.id;
+    let url = YOUTUBE_URL_PREFIX + id;
+
+    console.log("video info for: " + url);
+    let info = ytwrappers.get_video_details_sync(id);
+    console.log("video info: " + info);
+    console.log("found desired video, going to download");
+    download_video(id, res, info);
+}
+
+function download_video_sync(videoId, res, info) {
+    let url = YOUTUBE_URL_PREFIX + videoId;
+
+    let output_file = path.join(__dirname, '..', 'public', 'site', videoId + '.mp4');
+    console.log("output_file: " + output_file);
+
+    let writer = fs.createWriteStream(output_file);
+    writer.on('finish', function () {
+        res.status(200).json({
+            state: 'success',
+            link: '/site/' + videoId + '.mp4',
+            info: {
+                id: videoId,
+                title: info.title
+            }
+        });
+    });
+
+    console.log("starting video download");
+    ytdl(url).pipe(writer);
+    console.log("finished video download");
 }
 
 module.exports = function (app) {
-    //app.get('/target/:id', fetch_target_id);
-    app.get('/target/:id', async function (req, res) {
-        await fetch_target_id(req, res);
-    });
+    app.get('/target/:id', fetch_target_id_sync);
+    // app.get('/target/:id', async function (req, res) {
+    // await fetch_target_id(req, res);
+    // });
 
     app.get('/search/:query', async function (req, res) {
         let query = req.params.query;
