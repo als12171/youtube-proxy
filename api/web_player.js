@@ -13,33 +13,10 @@ async function fetch_target_id(req, res) {
     let info = await ytwrappers.get_video_details(id);
     console.log("video info: " + info);
     console.log("found desired video, going to download");
-    await download_video(id, res, info);
+    download_video_sync(id, res, info);
 }
 
-async function download_video(videoId, res, info) {
-    let url = YOUTUBE_URL_PREFIX + videoId;
-
-    let output_file = path.join(__dirname, '..', 'public', 'site', videoId + '.mp4');
-    console.log("output_file: " + output_file);
-
-    let writer = fs.createWriteStream(output_file);
-    writer.on('finish', function () {
-        res.status(200).json({
-            state: 'success',
-            link: '/site/' + videoId + '.mp4',
-            info: {
-                id: videoId,
-                title: info.title
-            }
-        });
-    });
-
-    console.log("starting video download");
-    ytdl(url).pipe(writer);
-    console.log("finished video download");
-}
-
-async function fetch_target_id_sync(req, res) {
+function fetch_target_id_sync(req, res) {
     let id = req.params.id;
     let url = YOUTUBE_URL_PREFIX + id;
 
@@ -47,7 +24,11 @@ async function fetch_target_id_sync(req, res) {
     let info = ytwrappers.get_video_details_sync(id);
     console.log("video info: " + info);
     console.log("found desired video, going to download");
-    download_video(id, res, info);
+    download_video_sync(id, res, info);
+}
+
+async function download_video(videoId, res, info) {
+    download_video_sync(videoId, res, info);
 }
 
 function download_video_sync(videoId, res, info) {
@@ -75,9 +56,9 @@ function download_video_sync(videoId, res, info) {
 
 module.exports = function (app) {
     app.get('/target/:id', fetch_target_id_sync);
-    // app.get('/target/:id', async function (req, res) {
-    // await fetch_target_id(req, res);
-    // });
+    //app.get('/target/:id', async function (req, res) {
+    //    await fetch_target_id(req, res);
+    //});
 
     app.get('/search/:query', async function (req, res) {
         let query = req.params.query;
