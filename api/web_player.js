@@ -6,16 +6,11 @@ const ytwrappers = require('./youtube_wrappers.js');
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
 function fetch_target_id(req, res) {
-    (async() => await getInfoAndDownload(req, res))();
-}
-
-async function getInfoAndDownload(req, res) {
     let id = req.params.id;
     let url = YOUTUBE_URL_PREFIX + id;
 
     console.log("video info for: " + url);
-    let info = await ytwrappers.search_one(id);
-    console.log('Format found!', format);
+    let info = ytwrappers.get_video_details_sync(id);
     console.log("found desired video, going to download");
     download_video(id, res, info);
 

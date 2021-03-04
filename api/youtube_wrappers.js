@@ -25,6 +25,34 @@ async function search_one(query) {
     };
 }
 
+function search_one_sync(query) {
+    (async() => await search_one(query))();
+}
+
+async function get_video_details(videoId) {
+
+    let results = await yts(query);
+    let videos = results.videos;
+
+    if (!videos || !videos.length) {
+        return null;
+    }
+
+    let video = videos[0];
+    return {
+        id: video.videoId,
+        link: video.url,
+        title: video.title
+    };
+}
+
+function get_video_details_sync(videoId) {
+    (async() => await get_video_details(videoId))();
+}
+
 module.exports = {
-    search_one
+    search_one,
+    search_one_sync,
+    get_video_details,
+    get_video_details_sync
 }
