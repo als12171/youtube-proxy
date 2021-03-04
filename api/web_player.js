@@ -5,34 +5,34 @@ const ytwrappers = require('./youtube_wrappers.js');
 
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
-function async fetch_target_id(req, res) {
+function fetch_target_id(req, res) {
     let id = req.params.id;
     let url = YOUTUBE_URL_PREFIX + id;
 
     console.log("ytdl getinfo for: " + url);
-    let info = await ytdl.getInfo(id);
+    let info = ytdl.getInfo(id);
     let format = ytdl.chooseFormat(info.formats, {
         quality: '134'
     });
     console.log('Format found!', format);
     console.log("found desired video, going to download");
-    await download_video(id, res, info);
+    download_video(id, res, info);
 
     // console.log("2 - ytdl getinfo for: " + url);
     // ytdl.getInfo(url, function (err, info) {
-        // if (err) {
-            // res.status(500).json({
-                // state: 'error',
-                // message: err.message
-            // });
-        // } else {
-            // console.log("found desired video, going to download");
-            // download_video(id, res, info);
-        // }
+    // if (err) {
+    // res.status(500).json({
+    // state: 'error',
+    // message: err.message
+    // });
+    // } else {
+    // console.log("found desired video, going to download");
+    // download_video(id, res, info);
+    // }
     // });
 }
 
-function async download_video(videoId, res, info) {
+function download_video(videoId, res, info) {
     let url = YOUTUBE_URL_PREFIX + videoId;
 
     let output_file = path.join(__dirname, '..', 'public', 'site', videoId + '.mp4');
