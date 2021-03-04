@@ -7,7 +7,12 @@ const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
 async function search_one(query) {
     console.log("query: " + query);
-    let results = await yts(query);
+    //let results = await yts(query);
+    let results = await yts({
+        'query': query,
+        'pageStart': 1,
+        'pageEnd': 2
+    });
 
     let videos = results.videos;
     console.log("videos: " + videos);
@@ -25,34 +30,26 @@ async function search_one(query) {
     };
 }
 
-function search_one_sync(query) {
-    (async() => await search_one(query))();
-}
-
 async function get_video_details(id) {
+    console.log("get video details for video: " + id);
+    let videoInfo = await yts({
+        'videoId': id
+    });
 
-    let results = await yts(id);
-    let videos = results.videos;
+    console.log("video data: " + videoInfo);
 
-    if (!videos || !videos.length) {
+    if (!videoInfo ) {
         return null;
     }
 
-    let video = videos[0];
     return {
-        id: video.videoId,
-        link: video.url,
-        title: video.title
+        id: videoInfo.videoId,
+        link: videoInfo.url,
+        title: videoInfo.title
     };
-}
-
-function get_video_details_sync(id) {
-    (async() => await get_video_details(id))();
 }
 
 module.exports = {
     search_one,
-    search_one_sync,
-    get_video_details,
-    get_video_details_sync
+    get_video_details
 }
