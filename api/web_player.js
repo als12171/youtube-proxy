@@ -6,11 +6,15 @@ const ytwrappers = require('./youtube_wrappers.js');
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
 function fetch_target_id(req, res) {
+    (async() => await getInfoAndDownload(req, res))();
+}
+
+async function getInfoAndDownload(req, res) {
     let id = req.params.id;
     let url = YOUTUBE_URL_PREFIX + id;
 
     console.log("ytdl getinfo for: " + url);
-    let info = ytdl.getInfo(id);
+    let info = await ytdl.getInfo(id);
     let format = ytdl.chooseFormat(info.formats, {
         quality: '134'
     });
