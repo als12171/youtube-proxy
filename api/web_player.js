@@ -13,7 +13,7 @@ async function fetch_target_id(req, res) {
     let info = await ytwrappers.get_video_details(id);
     console.log("video info: " + info);
     console.log("found desired video, going to download");
-    download_video_sync(id, res, info);
+    await download_video(id, res, info);
 }
 
 function fetch_target_id_sync(req, res) {
@@ -28,7 +28,26 @@ function fetch_target_id_sync(req, res) {
 }
 
 async function download_video(videoId, res, info) {
-    download_video_sync(videoId, res, info);
+    let url = YOUTUBE_URL_PREFIX + videoId;
+
+    let output_file = path.join(__dirname, '..', 'public', 'site', videoId + '.mp4');
+    console.log("output_file: " + output_file);
+
+    let writer = fs.createWriteStream(output_file);
+    writer.on('finish', function () {
+        res.status(200).json({
+            state: 'success',
+            link: '/site/' + videoId + '.mp4',
+            info: {
+                id: videoId,
+                title: info.title
+            }
+        });
+    });
+
+    console.log("starting video download");
+    ytdl(url).pipe(writer);
+    console.log("finished video download");
 }
 
 function download_video_sync(videoId, res, info) {
