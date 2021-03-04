@@ -5,7 +5,7 @@ const ytwrappers = require('./youtube_wrappers.js');
 
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
-async function fetch_video_handler(req, res) {
+async function fetch_target_id(req, res) {
     try {
         let id = req.params.id;
         let url = YOUTUBE_URL_PREFIX + id;
@@ -73,7 +73,7 @@ async function search_handler(req, res) {
 
 module.exports = function (app) {
     app.get('/target/:id', async function (req, res) {
-        await fetch_video_handler(req, res);
+        await fetch_target_id(req, res);
     });
 
     app.get('/search/:query', async function (req, res) {
