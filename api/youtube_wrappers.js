@@ -7,13 +7,8 @@ const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
 async function search_one(query) {
     console.log("query: " + query);
-    //let results = await yts(query);
-    let results = await yts({
-        'query': query,
-        'pageStart': 1,
-        'pageEnd': 2
-    });
-
+    let results = await yts(query);
+    
     let videos = results.videos;
     console.log("videos: " + videos);
 
