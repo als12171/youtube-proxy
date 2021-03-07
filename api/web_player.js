@@ -29,6 +29,7 @@ async function download_video(videoId, res, info) {
     let output_file = path.join(__dirname, '..', 'public', 'site', videoId + '.mp4');
     console.log("output_file: " + output_file);
     let videoTitle = info == null ? "missing title" : info.title;
+    let videoUrl = info == null ? "missing URL" : info.link;
 
     let writer = fs.createWriteStream(output_file);
     writer.on('finish', function () {
@@ -38,6 +39,7 @@ async function download_video(videoId, res, info) {
             info: {
                 id: videoId,
                 title: videoTitle
+                link: videoUrl
             }
         });
     });
