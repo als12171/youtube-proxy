@@ -47,6 +47,25 @@ async function download_video(videoId, res, info) {
     console.log("finished video download");
 }
 
+async function fetch_details_id(req, res) {
+    try {
+        let id = req.params.id;
+        let url = YOUTUBE_URL_PREFIX + id;
+
+        console.log("video info for: " + url);
+        let info = await ytwrappers.get_video_details(id);
+        res.status(200).send({
+            state: 'success',
+            info: info
+        });
+    } catch (ex) {
+        console.log(ex.message);
+        res.status(500).json({
+            error: ex.message
+        });
+    }
+}
+
 async function search_handler(req, res) {
     try {
         let query = req.params.query;
@@ -74,6 +93,10 @@ async function search_handler(req, res) {
 module.exports = function (app) {
     app.get('/target/:id', async function (req, res) {
         await fetch_target_id(req, res);
+    });
+
+    app.get('/details/:id', async function (req, res) {
+        await fetch_details_id(req, res);
     });
 
     app.get('/search/:query', async function (req, res) {

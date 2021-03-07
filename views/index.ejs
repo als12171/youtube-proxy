@@ -54,7 +54,7 @@
     </div>
     <div class="container" ng-hide="loading">
         <div class="row">
-            <div class="col s12 m6">
+            <div class="col s12 m4">
                 <div class="card">
                     <div class="card-content red-text">
                         <span class="card-title">YouTube Direct Link</span>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col s12 m6">
+            <div class="col s12 m4">
                 <div class="card">
                     <div class="card-content red-text">
                         <span class="card-title">YouTube Search</span>
@@ -83,6 +83,26 @@
                                 <div class="input-field col s12">
                                     <input ng-model="ytSearch" id="ytSearch" type="text" class="validate" required>
                                     <label for="ytSearch">Search Query</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <button type="submit" class="waves-effect waves-light btn red">Go</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="card">
+                    <div class="card-content red-text">
+                        <span class="card-title">YouTube Video Info</span>
+                        <form ng-submit="infoView()">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input ng-model="ytInfo" id="ytInfo" type="text" class="validate" required>
+                                    <label for="ytSearch">Video ID</label>
                                 </div>
                             </div>
                             <div class="row">

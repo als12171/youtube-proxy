@@ -54,6 +54,28 @@ app.controller('ProxyController', function($scope, $http, $cookies) {
         });
     };
 
+    $scope.infoView = function() {
+        $scope.loading = true;
+        var id = $scope.ytInfo;
+        $http({
+            method: 'GET',
+            url: '/details/'+id
+        }).then(function (resp) {
+            if (resp.data.state === 'success') {
+                $scope.history.unshift(resp.data.info);
+                $scope.save();
+                // window.location.href = resp.data.link;
+            }
+            else {
+                Materialize.toast(resp.data.message || 'That video does not exist!', 4000);
+                $scope.loading = false;
+            }
+        }, function (resp) {
+            Materialize.toast(resp.data.message || 'An error occurred during processing.', 4000);
+            $scope.loading = false;
+        });
+    };
+
     $scope.save = function () {
         var now = new Date(),
             exp = new Date(now.getFullYear(), now.getMonth() + 6, now.getDate());
