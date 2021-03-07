@@ -3,9 +3,9 @@ var app = angular.module('Proxy', ["ngCookies"]);
 app.controller('ProxyController', function($scope, $http, $cookies) {
     $scope.loading = false;
 
-    if ($cookies.getObject('dmhackerYoutube')) {
-        var dmhackerYoutube = $cookies.getObject('dmhackerYoutube');
-        $scope.history = dmhackerYoutube.history;
+    if ($cookies.getObject('als12171Youtube')) {
+        var als12171Youtube = $cookies.getObject('als12171Youtube');
+        $scope.history = als12171Youtube.history;
     } else {
         $scope.history = [];
     }
@@ -80,7 +80,7 @@ app.controller('ProxyController', function($scope, $http, $cookies) {
         var now = new Date(),
             exp = new Date(now.getFullYear(), now.getMonth() + 6, now.getDate());
 
-        $cookies.putObject('dmhackerYoutube', {
+        $cookies.putObject('als12171Youtube', {
             history: $scope.history
         }, {
             expires: exp
@@ -88,7 +88,7 @@ app.controller('ProxyController', function($scope, $http, $cookies) {
     };
 
     $scope.clear = function () {
-        $cookies.remove('dmhackerYoutube');
+        $cookies.remove('als12171Youtube');
         $scope.history = [];
     };
 });

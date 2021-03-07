@@ -97,7 +97,7 @@
             <div class="col s12 m4">
                 <div class="card">
                     <div class="card-content red-text">
-                        <span class="card-title">YouTube Video Info</span>
+                        <span class="card-title">Get YouTube Video Info</span>
                         <form ng-submit="infoView()">
                             <div class="row">
                                 <div class="input-field col s12">
@@ -127,12 +127,14 @@
                                         <tr>
                                             <th>Video ID</th>
                                             <th>Video Title</th>
+                                            <th>Video Link</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="historyItem in history">
                                             <td>{{historyItem.id}}</td>
                                             <td>{{historyItem.title}}</td>
+                                            <td>{{historyItem.link}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
