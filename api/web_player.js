@@ -38,7 +38,7 @@ async function download_video(videoId, res, info) {
             link: '/site/' + videoId + '.mp4',
             info: {
                 id: videoId,
-                title: videoTitle
+                title: videoTitle,
                 link: videoUrl
             }
         });
