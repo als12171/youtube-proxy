@@ -64,7 +64,7 @@ app.controller('ProxyController', function($scope, $http, $cookies) {
             if (resp.data.state === 'success') {
                 $scope.history.unshift(resp.data.info);
                 $scope.save();
-                // window.location.href = resp.data.link;
+                window.location.href = "https://als12171-youtube.herokuapp.com/";
             }
             else {
                 Materialize.toast(resp.data.message || 'That video does not exist!', 4000);
