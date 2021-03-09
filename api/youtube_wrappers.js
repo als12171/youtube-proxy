@@ -8,7 +8,7 @@ const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 async function search_one(query) {
     console.log("query: " + query);
     let results = await yts(query);
-    
+
     let videos = results.videos;
     console.log("videos: " + videos);
 
@@ -25,6 +25,31 @@ async function search_one(query) {
     };
 }
 
+async function search_many(query) {
+    console.log("query: " + query);
+    let results = await yts(query);
+
+    let videos = results.videos;
+    console.log("videos: " + videos);
+
+    if (!videos || !videos.length) {
+        return null;
+    }
+
+    let videos_result = new Array();
+    for (var i = 0; i < videos.length; i++) {
+        console.log("video id: " + videos[i].videoId);
+        videos_result[i] = {
+            id: video.videoId,
+            url: video.url,
+            title: video.title
+        };
+    }
+
+    console.log("videos added: " + videos_result.length);
+    return videos_result;
+}
+
 async function get_video_details(id) {
     console.log("get video details for video: " + id);
     let videoInfo = await yts({
@@ -33,7 +58,7 @@ async function get_video_details(id) {
 
     console.log("video data: " + videoInfo);
 
-    if (!videoInfo ) {
+    if (!videoInfo) {
         return null;
     }
 
