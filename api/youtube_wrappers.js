@@ -71,5 +71,6 @@ async function get_video_details(id) {
 
 module.exports = {
     search_one,
+	search_many,
     get_video_details
 }
