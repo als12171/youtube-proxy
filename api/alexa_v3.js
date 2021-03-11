@@ -39,114 +39,146 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/searchmany-ytsearch/:query', async function (req, res) {
-        let query = req.params.query;
+        try {
+            let query = req.params.query;
 
-        let log_function = log.get("searchmany-ytsearch-v3");
-        let log_header = req.connection.remoteAddress + ': ';
-        log_function.info(log_header + "Query is '" + query + "'");
+            let log_function = log.get("searchmany-ytsearch-v3");
+            let log_header = req.connection.remoteAddress + ': ';
+            log_function.info(log_header + "Query is '" + query + "'");
 
-        let metadata = await ytwrappers.search_many_ytSearch(query);
-        if (metadata == null) {
-            log_function.info(log_header + 'No results found');
-            res.status(200).send({
-                state: 'error',
-                message: 'No results found'
+            let metadata = await ytwrappers.search_many_ytSearch(query);
+            if (metadata == null) {
+                log_function.info(log_header + 'No results found');
+                res.status(200).send({
+                    state: 'error',
+                    message: 'No results found'
+                });
+                return;
+            }
+
+            log_function.info(log_header + "Found " + metadata.length + " videos");
+            res.status(200).json({
+                state: 'success',
+                message: 'Found videos result',
+                videos: metadata
             });
-            return;
+        } catch (e) {
+            log_function.error(e);
+            res.status(500).send({
+                state: 'error',
+                message: 'An error ocurred'
+            });
         }
-
-        log_function.info(log_header + "Found " + metadata.length + " videos");
-        res.status(200).json({
-            state: 'success',
-            message: 'Found videos result',
-            videos: metadata
-        });
     });
 
     app.get('/alexa/v3/searchmany-ytlist/:query/:amount:nextPageToken?', async function (req, res) {
-        let query = req.params.query;
-        let nextPageToken = req.params.nextPageToken;
-        let amount = req.params.amount;
+        try {
+            let query = req.params.query;
+            let nextPageToken = req.params.nextPageToken;
+            let amount = req.params.amount;
 
-        console.log("query is: " + query);
-        console.log("amount is: " + amount);
-        if (nextPageToken) {
-            console.log("nextPageToken is: " + nextPageToken);
-        } else {
-            console.log("nextPageToken not used.");
-            nextPageToken = null;
-        }
+            console.log("query is: " + query);
+            console.log("amount is: " + amount);
+            if (nextPageToken) {
+                console.log("nextPageToken is: " + nextPageToken);
+            } else {
+                console.log("nextPageToken not used.");
+                nextPageToken = null;
+            }
 
-        let log_function = log.get("searchmany-ytlist-v3");
-        let log_header = req.connection.remoteAddress + ': ';
-        log_function.info(log_header + "Query is '" + query + "'");
+            let log_function = log.get("searchmany-ytlist-v3");
+            let log_header = req.connection.remoteAddress + ': ';
+            log_function.info(log_header + "Query is '" + query + "'");
 
-        let metadata = await ytwrappers.search_many_ytList(query, nextPageToken, amount);
-        if (metadata == null) {
-            log_function.info(log_header + 'No results found');
-            res.status(200).send({
+            let metadata = await ytwrappers.search_many_ytList(query, nextPageToken, amount);
+            if (metadata == null) {
+                log_function.info(log_header + 'No results found');
+                res.status(200).send({
+                    state: 'error',
+                    message: 'No results found'
+                });
+                return;
+            }
+
+            log_function.info(log_header + "Found " + metadata.length + " videos");
+            res.status(200).json(metadata);
+        } catch (e) {
+            log_function.error(e);
+            res.status(500).send({
                 state: 'error',
-                message: 'No results found'
+                message: 'An error ocurred'
             });
-            return;
         }
-
-        log_function.info(log_header + "Found " + metadata.length + " videos");
-        res.status(200).json(metadata);
     });
 
     app.get('/alexa/v3/details-ytsearch/:id', async function (req, res) {
-        let id = req.params.id;
+        try {
+            let id = req.params.id;
 
-        let log_function = log.get("details-ytsearch-v3");
-        let log_header = req.connection.remoteAddress + ': ';
-        log_function.info(log_header + "getting video details for video with ID '" + id + "'");
+            let log_function = log.get("details-ytsearch-v3");
+            let log_header = req.connection.remoteAddress + ': ';
+            log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
-        let metadata = await ytwrappers.get_video_details_ytSearch(id);
-        if (metadata == null) {
-            log_function.info(log_header + 'No results found');
-            res.status(200).send({
-                state: 'error',
-                message: 'No results found'
-            });
-            return;
-        }
-
-        let videoId = metadata.id;
-        let title = metadata.title;
-        let url = YOUTUBE_URL_PREFIX + id;
-
-        log_function.info(log_header + "Video details is '" + title + "' @ " + url);
-        res.status(200).json({
-            state: 'success',
-            message: 'Video details found',
-            video: {
-                id: videoId,
-                title: title,
-                link: url
+            let metadata = await ytwrappers.get_video_details_ytSearch(id);
+            if (metadata == null) {
+                log_function.info(log_header + 'No results found');
+                res.status(200).send({
+                    state: 'error',
+                    message: 'No results found'
+                });
+                return;
             }
-        });
+
+            let videoId = metadata.id;
+            let title = metadata.title;
+            let url = YOUTUBE_URL_PREFIX + id;
+
+            log_function.info(log_header + "Video details is '" + title + "' @ " + url);
+            res.status(200).json({
+                state: 'success',
+                message: 'Video details found',
+                video: {
+                    id: videoId,
+                    title: title,
+                    link: url
+                }
+            });
+        } catch (e) {
+            log_function.error(e);
+            res.status(500).send({
+                state: 'error',
+                message: 'An error ocurred'
+            });
+        }
     });
 
     app.get('/alexa/v3/details-ytlist/:id', async function (req, res) {
-        let id = req.params.id;
+        try {
+            let id = req.params.id;
 
-        let log_function = log.get("details-ytlist-v3");
-        let log_header = req.connection.remoteAddress + ': ';
-        log_function.info(log_header + "getting video details for video with ID '" + id + "'");
+            let log_function = log.get("details-ytlist-v3");
+            let log_header = req.connection.remoteAddress + ': ';
+            log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
-        let metadata = await ytwrappers.get_video_details_ytList(id);
-        if (metadata == null) {
-            log_function.info(log_header + 'No results found');
-            res.status(200).send({
+            let metadata = await ytwrappers.get_video_details_ytList(id);
+            if (metadata == null) {
+                log_function.info(log_header + 'No results found');
+                res.status(200).send({
+                    state: 'error',
+                    message: 'No results found'
+                });
+                return;
+            }
+
+            log_function.info(log_header + "Video details is '" + metadata.snippet.title + "'");
+            res.status(200).json(metadata);
+        } catch (e) {
+            log_function.error(e);
+            res.status(500).send({
                 state: 'error',
-                message: 'No results found'
+                message: 'An error ocurred'
             });
-            return;
         }
-
-        log_function.info(log_header + "Video details is '" + metadata.snippet.title + "'");
-        res.status(200).json(metadata);
     });
 
     app.get('/alexa/v3/download/:id', function (req, res) {
