@@ -39,11 +39,12 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/searchmany-ytsearch/:query', async function (req, res) {
+        let log_function = log.get("searchmany-ytsearch-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+
         try {
             let query = req.params.query;
 
-            let log_function = log.get("searchmany-ytsearch-v3");
-            let log_header = req.connection.remoteAddress + ': ';
             log_function.info(log_header + "Query is '" + query + "'");
 
             let metadata = await ytwrappers.search_many_ytSearch(query);
@@ -72,22 +73,23 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/searchmany-ytlist/:query/:amount:nextPageToken?', async function (req, res) {
+        let log_function = log.get("searchmany-ytlist-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+
         try {
             let query = req.params.query;
             let nextPageToken = req.params.nextPageToken;
             let amount = req.params.amount;
 
-            console.log("query is: " + query);
-            console.log("amount is: " + amount);
+            log_function.info(log_header + "query is: " + query);
+            log_function.info(log_header + "amount is: " + amount);
             if (nextPageToken) {
-                console.log("nextPageToken is: " + nextPageToken);
+                log_function.info(log_header + "nextPageToken is: " + nextPageToken);
             } else {
-                console.log("nextPageToken not used.");
+                log_function.info(log_header + "nextPageToken not used.");
                 nextPageToken = null;
             }
 
-            let log_function = log.get("searchmany-ytlist-v3");
-            let log_header = req.connection.remoteAddress + ': ';
             log_function.info(log_header + "Query is '" + query + "'");
 
             let metadata = await ytwrappers.search_many_ytList(query, nextPageToken, amount);
@@ -112,11 +114,12 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/details-ytsearch/:id', async function (req, res) {
+        let log_function = log.get("details-ytsearch-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+
         try {
             let id = req.params.id;
 
-            let log_function = log.get("details-ytsearch-v3");
-            let log_header = req.connection.remoteAddress + ': ';
             log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
             let metadata = await ytwrappers.get_video_details_ytSearch(id);
@@ -153,11 +156,12 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/details-ytlist/:id', async function (req, res) {
+        let log_function = log.get("details-ytlist-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+
         try {
             let id = req.params.id;
 
-            let log_function = log.get("details-ytlist-v3");
-            let log_header = req.connection.remoteAddress + ': ';
             log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
             let metadata = await ytwrappers.get_video_details_ytList(id);
