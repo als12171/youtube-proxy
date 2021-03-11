@@ -38,7 +38,7 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchManyYtSearch/:query', async function (req, res) {
+    app.get('/alexa/v3/search-many-ytsearch/:query', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
 
         let log_function = log.get("searchManyYtSearch-v3");
@@ -63,7 +63,7 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchManyYtList/:query-.-:nextPageToken-.-:amount', async function (req, res) {
+    app.get('/alexa/v3/search-many-ytlist/:query-.-:nextPageToken-.-:amount', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
         let nextPageToken = req.params.nextPageToken;
         let amount = req.params.amount;
@@ -86,7 +86,7 @@ module.exports = function (app, cache, log) {
         res.status(200).json(metadata);
     });
 
-    app.get('/alexa/v3/detailsYtSearch/:id', async function (req, res) {
+    app.get('/alexa/v3/details-ytsearch/:id', async function (req, res) {
         let id = req.params.id;
 
         let log_function = log.get("detailsYtSearch-v3");
@@ -119,7 +119,7 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/detailsYtList/:id', async function (req, res) {
+    app.get('/alexa/v3/details-ytlist/:id', async function (req, res) {
         let id = req.params.id;
 
         let log_function = log.get("detailsYtList-v3");
