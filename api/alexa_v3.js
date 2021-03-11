@@ -72,7 +72,7 @@ module.exports = function (app, cache, log) {
         }
     });
 
-    app.get('/alexa/v3/searchmany-ytlist/:query/:amount:nextPageToken?', async function (req, res) {
+    app.get('/alexa/v3/searchmany-ytlist/:query/:amount/:nextPageToken?', async function (req, res) {
         let log_function = log.get("searchmany-ytlist-v3");
         let log_header = req.connection.remoteAddress + ': ';
 
