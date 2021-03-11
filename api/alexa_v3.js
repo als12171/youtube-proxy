@@ -63,10 +63,19 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchmany-ytlist/:query-.-:nextPageToken-.-:amount', async function (req, res) {
+    app.get('/alexa/v3/searchmany-ytlist/:query/:amount:nextPageToken?', async function (req, res) {
         let query = req.params.query;
         let nextPageToken = req.params.nextPageToken;
         let amount = req.params.amount;
+
+        console.log("query is: " + query);
+        console.log("amount is: " + amount);
+        if (nextPageToken) {
+            console.log("nextPageToken is: " + nextPageToken);
+        } else {
+            console.log("nextPageToken not used.");
+            nextPageToken = null;
+        }
 
         let log_function = log.get("searchmany-ytlist-v3");
         let log_header = req.connection.remoteAddress + ': ';
