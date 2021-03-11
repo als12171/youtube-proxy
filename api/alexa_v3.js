@@ -38,10 +38,10 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchmanyv1/:query', async function (req, res) {
+    app.get('/alexa/v3/searchmany-ytsearch/:query', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
 
-        let log_function = log.get("searchManyYtSearch-v3");
+        let log_function = log.get("searchmany-ytsearch-v3");
         let log_header = req.connection.remoteAddress + ': ';
         log_function.info(log_header + "Query is '" + query + "'");
 
@@ -63,12 +63,12 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchmanyv2/:query-.-:nextPageToken-.-:amount', async function (req, res) {
+    app.get('/alexa/v3/searchmany-ytlist/:query-.-:nextPageToken-.-:amount', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
         let nextPageToken = req.params.nextPageToken;
         let amount = req.params.amount;
 
-        let log_function = log.get("searchManyYtList-v3");
+        let log_function = log.get("searchmany-ytlist-v3");
         let log_header = req.connection.remoteAddress + ': ';
         log_function.info(log_header + "Query is '" + query + "'");
 
@@ -86,10 +86,10 @@ module.exports = function (app, cache, log) {
         res.status(200).json(metadata);
     });
 
-    app.get('/alexa/v3/detailsv1/:id', async function (req, res) {
+    app.get('/alexa/v3/details-ytsearch/:id', async function (req, res) {
         let id = req.params.id;
 
-        let log_function = log.get("detailsYtSearch-v3");
+        let log_function = log.get("details-ytsearch-v3");
         let log_header = req.connection.remoteAddress + ': ';
         log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
@@ -119,10 +119,10 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/detailsv2/:id', async function (req, res) {
+    app.get('/alexa/v3/details-ytlist/:id', async function (req, res) {
         let id = req.params.id;
 
-        let log_function = log.get("detailsYtList-v3");
+        let log_function = log.get("details-ytlist-v3");
         let log_header = req.connection.remoteAddress + ': ';
         log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
