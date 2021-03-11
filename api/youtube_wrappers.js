@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var ytdl = require('ytdl-core');
 var yts = require('yt-search');
+var ytlist = require("yt-list");
 
 const YOUTUBE_URL_PREFIX = "https://www.youtube.com/watch?v=";
 
@@ -25,7 +26,7 @@ async function search_one(query) {
     };
 }
 
-async function search_many(query) {
+async function search_many_ytSearch(query) {
     console.log("query: " + query);
     let results = await yts(query);
 
@@ -50,7 +51,23 @@ async function search_many(query) {
     return videos_result;
 }
 
-async function get_video_details(id) {
+async function search_many_ytList(query, nextPageToken, amount) {
+    console.log("query: " + query);
+    let results = await ytlist(query, nextPageToken, amount);
+
+    console.log("videos count: " + results.totalResults);
+    console.log("videos nextPageToken: " + results.nextPageToken);
+    console.log("videos items: " + results.items);
+    console.log("videos items: " + results.items.length);
+
+    if (!results || !results.items.length) {
+        return null;
+    }
+
+    return results;
+}
+
+async function get_video_details_ytSearch(id) {
     console.log("get video details for video: " + id);
     let videoInfo = await yts({
         'videoId': id
@@ -69,8 +86,23 @@ async function get_video_details(id) {
     };
 }
 
+async function get_video_details_ytList(id) {
+    console.log("get video details for video: " + id);
+    let videoInfo = await ytlist.listVideoDetails(id);
+
+    console.log("video data: " + videoInfo);
+
+    if (!videoInfo) {
+        return null;
+    }
+
+    return videoInfo;
+}
+
 module.exports = {
     search_one,
-	search_many,
-    get_video_details
+    search_many_ytSearch,
+    search_many_ytList,
+    get_video_details_ytSearch,
+    get_video_details_ytList
 }

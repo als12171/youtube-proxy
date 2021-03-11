@@ -11,7 +11,7 @@ async function fetch_target_id(req, res) {
         let url = YOUTUBE_URL_PREFIX + id;
 
         console.log("video info for: " + url);
-        let info = await ytwrappers.get_video_details(id);
+        let info = await ytwrappers.get_video_details_ytSearch(id);
         console.log("video info: " + info);
         console.log("found desired video, going to download");
         await download_video(id, res, info);
@@ -55,7 +55,7 @@ async function fetch_details_id(req, res) {
         let url = YOUTUBE_URL_PREFIX + id;
 
         console.log("video info for: " + url);
-        let info = await ytwrappers.get_video_details(id);
+        let info = await ytwrappers.get_video_details_ytSearch(id);
         res.status(200).send({
             state: 'success',
             info: info

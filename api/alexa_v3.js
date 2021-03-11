@@ -38,14 +38,14 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchMany/:query', async function (req, res) {
+    app.get('/alexa/v3/searchManyYtSearch/:query', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
 
-        let log_function = log.get("search-v3")
+        let log_function = log.get("searchManyYtSearch-v3")
             let log_header = req.connection.remoteAddress + ': '
             log_function.info(log_header + "Query is '" + query + "'");
 
-        let metadata = await ytwrappers.search_many(query);
+        let metadata = await ytwrappers.search_many_ytSearch(query);
         if (metadata == null) {
             log_function.info(log_header + 'No results found');
             res.status(200).send({
@@ -61,6 +61,29 @@ module.exports = function (app, cache, log) {
             message: 'Found videos result',
             videos: metadata
         });
+    });
+
+    app.get('/alexa/v3/searchManyYtList/:query.:nextPageToken.:amount', async function (req, res) {
+        let query = new Buffer(req.params.query, 'base64').toString();
+        let nextPageToken = new Buffer(req.params.nextPageToken, 'base64').toString();
+        let amount = new Buffer(req.params.amount, 'base64').toString();
+
+        let log_function = log.get("searchManyYtList-v3")
+            let log_header = req.connection.remoteAddress + ': '
+            log_function.info(log_header + "Query is '" + query + "'");
+
+        let metadata = await ytwrappers.search_many_ytList(query, nextPageToken, amount);
+        if (metadata == null) {
+            log_function.info(log_header + 'No results found');
+            res.status(200).send({
+                state: 'error',
+                message: 'No results found'
+            });
+            return;
+        }
+
+        log_function.info(log_header + "Found " + metadata.length + " videos");
+        res.status(200).json(metadata);
     });
 
     app.get('/alexa/v3/details/:id', async function (req, res) {
