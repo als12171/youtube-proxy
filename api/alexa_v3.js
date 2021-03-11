@@ -9,9 +9,9 @@ module.exports = function (app, cache, log) {
     app.get('/alexa/v3/search/:query', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
 
-        let log_function = log.get("search-v3")
-            let log_header = req.connection.remoteAddress + ': '
-            log_function.info(log_header + "Query is '" + query + "'");
+        let log_function = log.get("search-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+        log_function.info(log_header + "Query is '" + query + "'");
 
         let metadata = await ytwrappers.search_one(query);
         if (metadata == null) {
@@ -41,9 +41,9 @@ module.exports = function (app, cache, log) {
     app.get('/alexa/v3/searchManyYtSearch/:query', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
 
-        let log_function = log.get("searchManyYtSearch-v3")
-            let log_header = req.connection.remoteAddress + ': '
-            log_function.info(log_header + "Query is '" + query + "'");
+        let log_function = log.get("searchManyYtSearch-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+        log_function.info(log_header + "Query is '" + query + "'");
 
         let metadata = await ytwrappers.search_many_ytSearch(query);
         if (metadata == null) {
@@ -63,14 +63,14 @@ module.exports = function (app, cache, log) {
         });
     });
 
-    app.get('/alexa/v3/searchManyYtList/:query.:nextPageToken.:amount', async function (req, res) {
+    app.get('/alexa/v3/searchManyYtList/:query-.-:nextPageToken-.-:amount', async function (req, res) {
         let query = new Buffer(req.params.query, 'base64').toString();
-        let nextPageToken = new Buffer(req.params.nextPageToken, 'base64').toString();
-        let amount = new Buffer(req.params.amount, 'base64').toString();
+        let nextPageToken = req.params.nextPageToken;
+        let amount = req.params.amount;
 
-        let log_function = log.get("searchManyYtList-v3")
-            let log_header = req.connection.remoteAddress + ': '
-            log_function.info(log_header + "Query is '" + query + "'");
+        let log_function = log.get("searchManyYtList-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+        log_function.info(log_header + "Query is '" + query + "'");
 
         let metadata = await ytwrappers.search_many_ytList(query, nextPageToken, amount);
         if (metadata == null) {
@@ -86,14 +86,14 @@ module.exports = function (app, cache, log) {
         res.status(200).json(metadata);
     });
 
-    app.get('/alexa/v3/details/:id', async function (req, res) {
+    app.get('/alexa/v3/detailsYtSearch/:id', async function (req, res) {
         let id = req.params.id;
 
-        let log_function = log.get("details-v3")
-            let log_header = req.connection.remoteAddress + ': '
-            log_function.info(log_header + "getting video details for video with ID '" + id + "'");
+        let log_function = log.get("detailsYtSearch-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+        log_function.info(log_header + "getting video details for video with ID '" + id + "'");
 
-        let metadata = await ytwrappers.get_video_details(id);
+        let metadata = await ytwrappers.get_video_details_ytSearch(id);
         if (metadata == null) {
             log_function.info(log_header + 'No results found');
             res.status(200).send({
@@ -119,13 +119,34 @@ module.exports = function (app, cache, log) {
         });
     });
 
+    app.get('/alexa/v3/detailsYtList/:id', async function (req, res) {
+        let id = req.params.id;
+
+        let log_function = log.get("detailsYtList-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+        log_function.info(log_header + "getting video details for video with ID '" + id + "'");
+
+        let metadata = await ytwrappers.get_video_details_ytList(id);
+        if (metadata == null) {
+            log_function.info(log_header + 'No results found');
+            res.status(200).send({
+                state: 'error',
+                message: 'No results found'
+            });
+            return;
+        }
+
+        log_function.info(log_header + "Video details is '" + metadata.snippet.title + "'");
+        res.status(200).json(metadata);
+    });
+
     app.get('/alexa/v3/download/:id', function (req, res) {
         let id = req.params.id;
         let url = YOUTUBE_URL_PREFIX + id;
 
-        let log_function = log.get("download-v3")
-            let log_header = req.connection.remoteAddress + ': '
-            log_function.info(log_header + "Download requested for video with ID '" + id + "'");
+        let log_function = log.get("download-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+        log_function.info(log_header + "Download requested for video with ID '" + id + "'");
 
         if (id in cache) {
             log_function.info(log_header + "Cache hit.");
