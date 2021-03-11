@@ -39,7 +39,8 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/searchmany-ytsearch/:query', async function (req, res) {
-        let query = new Buffer(req.params.query, 'base64').toString();
+        //let query = new Buffer(req.params.query, 'base64').toString();
+        let query = req.params.query;
 
         let log_function = log.get("searchmany-ytsearch-v3");
         let log_header = req.connection.remoteAddress + ': ';
@@ -64,7 +65,7 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/searchmany-ytlist/:query-.-:nextPageToken-.-:amount', async function (req, res) {
-        let query = new Buffer(req.params.query, 'base64').toString();
+        let query = req.params.query;
         let nextPageToken = req.params.nextPageToken;
         let amount = req.params.amount;
 
