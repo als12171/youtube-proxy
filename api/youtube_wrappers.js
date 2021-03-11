@@ -41,9 +41,9 @@ async function search_many_ytSearch(query) {
     for (var i = 0; i < videos.length; i++) {
         console.log("video id: " + videos[i].videoId);
         videos_result[i] = {
-            id: video.videoId,
-            url: video.url,
-            title: video.title
+            id: videos[i].videoId,
+            url: videos[i].url,
+            title: videos[i].title
         };
     }
 

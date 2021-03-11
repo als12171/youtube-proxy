@@ -39,7 +39,6 @@ module.exports = function (app, cache, log) {
     });
 
     app.get('/alexa/v3/searchmany-ytsearch/:query', async function (req, res) {
-        //let query = new Buffer(req.params.query, 'base64').toString();
         let query = req.params.query;
 
         let log_function = log.get("searchmany-ytsearch-v3");
