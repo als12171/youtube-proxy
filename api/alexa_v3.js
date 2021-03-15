@@ -113,8 +113,8 @@ module.exports = function (app, cache, log) {
         }
     });
 
-    app.get('/alexa/v3/searchmany-ytlist-v2/:query/:amount', async function (req, res) {
-        let log_function = log.get("searchmany-ytlist-v3");
+    app.get('/alexa/v3/searchmany-ytlist2/:query/:amount', async function (req, res) {
+        let log_function = log.get("searchmany-ytlist2-v3");
         let log_header = req.connection.remoteAddress + ': ';
 
         try {
