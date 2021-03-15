@@ -1,8 +1,8 @@
 {
-  "name": "dmhacker-youtube",
+  "name": "als12171-youtube",
   "description": "YouTube proxy that can fetch and play videos",
-  "repository": "https://github.com/dmhacker/dmhacker-youtube",
-  "logo": "https://raw.githubusercontent.com/dmhacker/dmhacker-youtube/master/logo.png",
+  "repository": "https://github.com/als12171/youtube-proxy",
+  "logo": "https://raw.githubusercontent.com/als12171/youtube-proxy/master/logo.png",
   "keywords": [
       "node",
       "heroku",
