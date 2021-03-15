@@ -132,6 +132,7 @@ module.exports = {
     search_one,
     search_many_ytSearch,
     search_many_ytList,
+	search_many_ytList_v2,
     get_video_details_ytSearch,
     get_video_details_ytList
 }
