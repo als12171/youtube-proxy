@@ -124,7 +124,7 @@ module.exports = function (app, cache, log) {
             log_function.info(log_header + "Query is '" + query + "'");
             log_function.info(log_header + "amount is: " + amount);
 
-            let metadata = await ytwrappers.search_many_ytList_v2(query, null, amount);
+            let metadata = await ytwrappers.search_many_ytList_v2(query, amount);
             if (metadata == null) {
                 log_function.info(log_header + 'No results found');
                 res.status(200).send({
