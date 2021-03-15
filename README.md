@@ -1,6 +1,6 @@
-# dmhacker-youtube
+# youtube-proxy
 
-This contains a gateway for my [alexa-youtube-skill](https://github.com/dmhacker/alexa-youtube-skill) as well as a web-based, Youtube-specific proxy.
+This contains a gateway for my [alexa-youtube-skill](https://github.com/als12171/alexa-youtube) as well as a web-based, Youtube-specific proxy.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ Before setting up anything, follow [this blog post](https://elfsight.com/blog/20
 4. Give your app a name (referred to as __{YOUR_APP_NAME}__) and select a region for deployment.
 5. Go to the __Deploy__ section on your new app's dashboard.
     1. Under `Deployment Method`, select the GitHub option. You should be prompted to authorize Heroku's usage of your GitHub account information.
-    2. Under `Connect to GitHub`, make sure your account is selected and type in "dmhacker-youtube" for the repository to search for.
+    2. Under `Connect to GitHub`, make sure your account is selected and type in "youtube-proxy" for the repository to search for.
     3. If you correctly forked this repository and typed in the repository name correctly, this should show up as an option to connect to. Click on "Connect".
 6. Now, go to the __Settings__ section on your app's dashboard.
     1. Under `Config Variables`, click on "Reveal Config Vars" and then enter in the following key-value pair(s):
