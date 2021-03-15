@@ -69,11 +69,11 @@ async function search_many_ytList(query, nextPageToken, amount) {
 
 async function search_many_ytList_v2(query, amount) {
     console.log("query: " + query);
+    console.log("amount: " + amount);
     let results = await ytlist.searchVideos(query, null, amount);
 
     console.log("videos count: " + results.totalResults);
-    console.log("videos items: " + results.items);
-    console.log("videos items: " + results.items.length);
+    console.log("videos items count: " + results.items.length);
 
     if (!results || !results.items.length) {
         return null;
