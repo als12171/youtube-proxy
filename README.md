@@ -1,6 +1,7 @@
 # youtube-proxy
 
 This contains a gateway for my [alexa-youtube-skill](https://github.com/als12171/alexa-youtube) as well as a web-based, Youtube-specific proxy.
+This proxy was forked from https://github.com/dmhacker/dmhacker-youtube
 
 ## Prerequisites
 
