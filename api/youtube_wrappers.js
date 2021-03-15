@@ -67,6 +67,35 @@ async function search_many_ytList(query, nextPageToken, amount) {
     return results;
 }
 
+async function search_many_ytList_v2(query, amount) {
+    console.log("query: " + query);
+    let results = await ytlist.searchVideos(query, null, amount);
+
+    console.log("videos count: " + results.totalResults);
+    console.log("videos items: " + results.items);
+    console.log("videos items: " + results.items.length);
+
+    if (!results || !results.items.length) {
+        return null;
+    }
+
+    let videos_result = new Array();
+    for (var i = 0; i < results.items.length; i++) {
+        console.log("video id: " + results.items[i].videoId);
+        console.log("video url: " + YOUTUBE_URL_PREFIX + results.items[i].videoId, );
+        console.log("video title: " + results.items[i].snippet.title);
+
+        videos_result[i] = {
+            id: results.items[i].videoId,
+            url: YOUTUBE_URL_PREFIX + results.items[i].videoId,
+            title: results.items[i].snippet.title
+        };
+    }
+
+    console.log("videos added: " + videos_result.length);
+    return videos_result;
+}
+
 async function get_video_details_ytSearch(id) {
     console.log("get video details for video: " + id);
     let videoInfo = await yts({

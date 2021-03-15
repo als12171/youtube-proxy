@@ -135,18 +135,7 @@ module.exports = function (app, cache, log) {
             }
 
             log_function.info(log_header + "Found " + metadata.length + " videos");
-            let videos_result = new Array();
-            for (var i = 0; i < metadata.length; i++) {
-                let videos = metadata.items;
-                console.log("video id: " + videos[i].videoId);
-                videos_result[i] = {
-                    id: videos[i].videoId,
-                    url: YOUTUBE_URL_PREFIX + videos[i].videoId,
-                    title: videos[i].snippet.title
-                };
-            }
-
-            res.status(200).json(videos_result);
+            res.status(200).json(metadata);
         } catch (e) {
             log_function.error(e);
             res.status(500).send({
