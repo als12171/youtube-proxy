@@ -113,6 +113,49 @@ module.exports = function (app, cache, log) {
         }
     });
 
+    app.get('/alexa/v3/searchmany-ytlist-v2/:query/:amount', async function (req, res) {
+        let log_function = log.get("searchmany-ytlist-v3");
+        let log_header = req.connection.remoteAddress + ': ';
+
+        try {
+            let query = req.params.query;
+            let amount = req.params.amount;
+
+            log_function.info(log_header + "Query is '" + query + "'");
+            log_function.info(log_header + "amount is: " + amount);
+
+            let metadata = await ytwrappers.search_many_ytList(query, null, amount);
+            if (metadata == null) {
+                log_function.info(log_header + 'No results found');
+                res.status(200).send({
+                    state: 'error',
+                    message: 'No results found'
+                });
+                return;
+            }
+
+            log_function.info(log_header + "Found " + metadata.length + " videos");
+            let videos_result = new Array();
+            for (var i = 0; i < metadata.length; i++) {
+                let videos = metadata.items;
+                console.log("video id: " + videos[i].videoId);
+                videos_result[i] = {
+                    id: videos[i].videoId,
+                    url: YOUTUBE_URL_PREFIX + videos[i].videoId,
+                    title: videos[i].snippet.title
+                };
+            }
+
+            res.status(200).json(videos_result);
+        } catch (e) {
+            log_function.error(e);
+            res.status(500).send({
+                state: 'error',
+                message: 'An error ocurred'
+            });
+        }
+    });
+
     app.get('/alexa/v3/details-ytsearch/:id', async function (req, res) {
         let log_function = log.get("details-ytsearch-v3");
         let log_header = req.connection.remoteAddress + ': ';
