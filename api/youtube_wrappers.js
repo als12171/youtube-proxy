@@ -81,10 +81,6 @@ async function search_many_ytList_v2(query, amount) {
 
     let videos_result = new Array();
     for (var i = 0; i < results.items.length; i++) {
-        console.log("video id: " + results.items[i].videoId);
-        console.log("video url: " + YOUTUBE_URL_PREFIX + results.items[i].videoId, );
-        console.log("video title: " + results.items[i].snippet.title);
-
         videos_result[i] = {
             id: results.items[i].videoId,
             url: YOUTUBE_URL_PREFIX + results.items[i].videoId,
